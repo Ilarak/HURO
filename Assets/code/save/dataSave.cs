@@ -14,17 +14,16 @@ public class dataSave : MonoBehaviour
     string sessionSaveStr;
 
     //value of the session
-    float meanForce,distance,time;
-
+    float averageForce,distance,time;
     int weigthForce;
 
-    int nbExSession =0;
+    int nbExSession=0;
 
     void Start(){
         player.nbSession+=1;
         
         if (player.nbSession==1){
-            sessionSaveStr = ";time;distance;mean force";
+            sessionSaveStr = ";time;distance;average force";
         }
         else {
             sessionSaveStr=readCSV()+"\nsession"+player.nbSession+" :";
@@ -48,6 +47,7 @@ public class dataSave : MonoBehaviour
             bool firstLigne = true;
             while(true){
                 string reader = strReader.ReadLine();
+                //end of the file
                 if(reader == null){
                     strReader.Close();
                     return data_string;
@@ -70,9 +70,8 @@ public class dataSave : MonoBehaviour
     }
 
     public void SaveEx(){
-        // when you click on the exercice choice, add the current Exercice
+        // recover the current exercice name
         currentEx = PlayerPrefs.GetString("currentEx");
-        currentEx="ex1";
         nbExSession += 1;
         if (currentEx=="ex1"){
             player.nbEx1+=1;
@@ -80,8 +79,8 @@ public class dataSave : MonoBehaviour
 
         string fileNameEx= currentEx+"_"+player.nbEx1.ToString();
         sessionSaveStr+="\n"+fileNameEx;
-        saveCSV(fileNameEx);
 
+        saveCSV(fileNameEx);
         saveCSV("global_data");
     }
 
@@ -116,9 +115,9 @@ public class dataSave : MonoBehaviour
             str += ";"+var.ToString();
         }
         str+="\nforce";
-        float meanForceEx=0;
+        float averageForceEx=0;
         foreach (var var in RosSubscriberExample.force){
-            meanForceEx = calculateNorm(var);
+            averageForceEx = calculateNorm(var);
             str += ";"+var[0].ToString()+","+var[1].ToString()+","+var[2].ToString();
         }
 
@@ -145,23 +144,23 @@ public class dataSave : MonoBehaviour
             str += ";"+var[0].ToString()+","+var[1].ToString()+","+var[2].ToString()+","+var[3].ToString()+","+var[4].ToString()+","+var[5].ToString();
         }
 
-        //add mean values to the session save data
+        //adds the average values to the session save data
         weigthForce += RosSubscriberExample.force.Count;
-        sessionSaveStr += ";"+timeEx+";"+distanceEx+";"+meanForceEx/RosSubscriberExample.force.Count;
-        meanForce+=meanForceEx;
+        sessionSaveStr += ";"+timeEx+";"+distanceEx+";"+averageForceEx/RosSubscriberExample.force.Count;
+        averageForce+=averageForceEx;
         distance+=distanceEx;
         time+=timeEx;
         return str;
     }
 
     public string sessionString(){
-        sessionSaveStr+="\nresume;"+time+";"+distance+";"+meanForce+"\n";
+        sessionSaveStr+="\nresume;"+time+";"+distance+";"+averageForce+"\n";
 
-        // we add 2 means
-        player.meanForce = (player.meanForce*player.weigthForce + meanForce)/(weigthForce+player.weigthForce);
+        // we add 2 averages
+        player.averageForce = (player.averageForce*player.weigthForce + averageForce)/(weigthForce+player.weigthForce);
         player.timeTot+=time;
         player.totDistance +=distance;
-        player.weigthForce += weigthForce; // we save the weigth of the force to, after add 2 means
+        player.weigthForce += weigthForce; // we save the weigth of the force allowing to add later two average
 
         return sessionSaveStr;
     }
@@ -209,7 +208,6 @@ public class dataSave : MonoBehaviour
                 i++;
             }
         }
-            
         return filePath;
     }
 

@@ -32,7 +32,6 @@ public class main : MonoBehaviour
     } 
 
     void OnDisable(){
-        print("nb ball : " + nbBall);
         PlayerPrefs.SetInt("nbBall",nbBall);
         PlayerPrefs.SetInt("axis",axis);
         PlayerPrefs.SetInt("force",force);
@@ -44,8 +43,8 @@ public class main : MonoBehaviour
     IEnumerator StartCoroutine(){
         print("Launch UR control");
         string scriptPath;
+        //scriptPath = "roslaunch ur_robot_driver ur3_bringup.launch ip:="+ip_of_the_robot;
         scriptPath = "roslaunch ur_robot_driver my_ur3_bringup.launch";
-        StartCoroutine(LaunchCoroutine(processUR,scriptPath,"stop UR connection"));
         //We have to wait, if not : pb with the rosmaster
         yield return new WaitForSeconds(1f);
 
@@ -118,7 +117,6 @@ public class main : MonoBehaviour
         }
         else if (positionOrCalibration == 2){
             calibration = true;
-            print("outset " + outset_force_sensor + "test");
             inCalibration.text = "Calibration done";
             print(message);
         }
@@ -126,36 +124,6 @@ public class main : MonoBehaviour
             print(message);
         }
     }
-    public IEnumerator TestLaunchCoroutine(Process process, string path, string message){
-            process = new Process();
-            ProcessStartInfo startInfo = new ProcessStartInfo("/bin/bash", $"-c \"{activeCatkin}  && {path} \"");
-            // Process parameters
-            startInfo.UseShellExecute = false;
-            startInfo.CreateNoWindow = true;
-            startInfo.RedirectStandardOutput = true;
-            startInfo.RedirectStandardError = true;
-            process.StartInfo = startInfo;
-
-            // Set our event handler to asynchronously read the sort output.
-            process.OutputDataReceived += new DataReceivedEventHandler((s,e) =>{
-                if(e.Data.Contains("The robot is in position")){
-                    robot_in_position = true;
-                    print(message);
-                    inCalibration.text = "";
-                };
-            });
-            // Start the process.
-            process.Start();
-
-            // Start the asynchronous read of the sort output stream.
-            process.BeginOutputReadLine();
-
-            // Wait for the sort process to write the sorted text lines.
-            yield return WaitEndProcess(process);
-
-            process.Close();
-            //print(message);
-        }
 
     IEnumerator WaitEndProcess(Process process){
         while(!process.HasExited){
@@ -212,7 +180,6 @@ public class main : MonoBehaviour
     }
     public void ReadStringCInput(string s){
         if (float.TryParse(s, out c)){
-            print("la transfo a marche" + c);
             if (c <= 0){
                 good_c = false;
                 notGoodC.text = "c too small (<=0)";
@@ -257,11 +224,13 @@ public class main : MonoBehaviour
 
     public void changeScene(){
         //nb of the balls to reach for the exercice
+        nbBall=22;
+
+        //keep the player managment between scene
         GameObject obj = GameObject.Find("playerManagment");
         DontDestroyOnLoad(obj);
-        nbBall=22;
-        SceneManager.LoadScene(3);
-        /*if (axis == 0){
+        
+        if (axis == 0){
             nbBall=11;
             SceneManager.LoadScene(1);
         }
@@ -276,12 +245,10 @@ public class main : MonoBehaviour
         if (axis == 3){
             nbBall=22;
             SceneManager.LoadScene(4);
-        } */       
+        }   
     }
 
     public void startEx(){
-        changeScene();
-        /*
         if (good_force && robot_in_position && calibration && good_c){
             changeScene();
         }
@@ -296,6 +263,6 @@ public class main : MonoBehaviour
         }
         else {
             notAllGood.text="You have to calibrate the robot";
-        }*/
+        }
     }
 }

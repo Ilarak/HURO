@@ -9,7 +9,6 @@ public class savePlayer : MonoBehaviour{
     public Player player = new Player();
     public dataSave dataSaveCVS;
 
-    // Start is called before the first frame update
     void OnEnable(){
         if (PlayerPrefs.HasKey("playerName")){
             player.playerName = PlayerPrefs.GetString("playerName");
@@ -18,16 +17,11 @@ public class savePlayer : MonoBehaviour{
             PlayerPrefs.SetString("playerName","unknown");
             player.playerName = "unknown";
         }
-
         exportJson();
         dataSaveCVS.initializePlayer(player);
     }
 
     private void OnDisable(){
-        // we have to put this code of ligne when the player end the exercice
-        //save the exercice
-        //dataSaveCVS.SaveEx();
-
         //save the session
         dataSaveCVS.SaveSession();
 
@@ -77,8 +71,6 @@ public class Player{
     public float maxVel=0.0F;
     public float timeTot=0.0F;
     public float totDistance = 0.0F;
-    //is in fonction of the force applied to the robot and c
-    //public float meanSpeed = 0.0F;
-    public float meanForce = 0.0F;
+    public float averageForce = 0.0F;
     public int weigthForce =0;
 }

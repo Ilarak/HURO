@@ -14,8 +14,6 @@ public class canvasManagment : MonoBehaviour
         
         GameObject obj = objs[0];  
         obj.SendMessage("SaveEx");
-
-        
     }
 
     public void endSession(){

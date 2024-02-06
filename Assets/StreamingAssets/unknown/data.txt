@@ -1,0 +1,1 @@
+{"playerName":"unknown","nbSession":4,"nbEx1":0,"nbEx2":0,"nbEx3":0,"maxVel":0.0,"timeTot":0.0,"totDistance":0.0,"averageForce":NaN,"weigthForce":0}
