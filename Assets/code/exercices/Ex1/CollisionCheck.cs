@@ -7,30 +7,32 @@ public class CollisionCheck : MonoBehaviour
     // every frame of the collision OnTriggerStay
     // end of the collision OnTriggerExit 
     // first collison 
+    RosPublisherExample publisher;
+    void Start() {
+        GameObject ObjRosControllers = GameObject.Find("RosControllers");
+        GameObject ObjRosPublisher = ObjRosControllers.transform.Find("RosPublisher").gameObject;
+        publisher = ObjRosPublisher.GetComponent<RosPublisherExample>();
+    }
 
-    public static bool collision = false;
     public static bool reachSphere = false;
     void OnTriggerEnter(Collider other){
         if (other.gameObject.tag == "wall"){
-            print("collision avec le mur");
-            collision = true;
+            print("collision with the wall");
+            publisher.pubCollision(true);
         }
         if (other.gameObject.tag == "VisibleBall"){
-            print("collision");
             reachSphere = true;
         }
     }
     void OnTriggerStay(Collider other){
         if (other.gameObject.tag == "wall"){
-            collision = true;
+            print("collision with the wall");
+            publisher.pubCollision(true);
         }
     }
     void OnTriggerExit(Collider other){
         if (other.gameObject.tag == "wall"){
-            collision = false;
+            publisher.pubCollision(false);
         }
-    }
-    public bool IsInCollision(){
-        return collision;
     }
 }

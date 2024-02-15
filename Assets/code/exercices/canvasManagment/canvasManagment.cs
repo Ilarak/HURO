@@ -8,11 +8,15 @@ public class canvasManagment : MonoBehaviour
 
     public GameObject canvas;
     public void CanvasStopExercice(){
+        //stop the infinit loop of the exercice
+        RosPublisherExample.instance.pubStartEx(false); 
+        RosSubscriberExample.instance.exerciceRunning = false;
+
+        //active the canvas 
         canvas.SetActive(true);
 
-        GameObject[] objs = GameObject.FindGameObjectsWithTag("saveObject");
-        
-        GameObject obj = objs[0];  
+        //save the object
+        GameObject obj = GameObject.FindWithTag("saveObject");
         obj.SendMessage("SaveEx");
     }
 
@@ -21,8 +25,6 @@ public class canvasManagment : MonoBehaviour
     }
 
     public void newExercice(){
-        GameObject obj = GameObject.Find("playerManagment");
-        DontDestroyOnLoad(obj);
         SceneManager.LoadScene(0);
     }
 }

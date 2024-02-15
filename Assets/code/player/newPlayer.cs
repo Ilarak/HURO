@@ -5,17 +5,8 @@ using System.IO;
 
 public class newPlayer : MonoBehaviour
 {
-    public Player player;
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public string NewplayerName; 
+    Player player;
 
     void addFile(){
         #if UNITY_EDITOR
@@ -23,6 +14,7 @@ public class newPlayer : MonoBehaviour
         #else
             var folder = Application.persistentDataPath;
         #endif
-        Directory.CreateDirectory(folder+"/"+player.playerName);
+        Directory.CreateDirectory(folder+"/"+NewplayerName);
+        player.playerName = NewplayerName;
     }
 }

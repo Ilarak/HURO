@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ExBall/x-y-scene.unity
     guid: 711b5c02fd980c83ea3c7f4bc8dadbef
-  - enabled: 0
-    path: Assets/Scenes/3D.unity
-    guid: 638c86f2402a7c7a891a3275da1c0966
+  - enabled: 1
+    path: Assets/Scenes/ExBall/3D.unity
+    guid: f68b033859da5b25e8839c5209d24b73
   m_configObjects: {}
