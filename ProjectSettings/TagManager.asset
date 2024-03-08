@@ -4,11 +4,13 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - robot
   - hand
   - wall
-  - HiddenBall
   - VisibleBall
   - saveObject
+  - strawberry
+  - objToReach
   layers:
   - Default
   - TransparentFX
